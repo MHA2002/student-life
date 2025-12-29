@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Assignments
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-3">Assignments</h2>
+
+    <!-- Add Assignment -->
+    <form action="/assignments" method="post" class="row g-2 mb-4">
+        <input type="hidden" name="action" value="add">
+
+        <div class="col-md-3">
+            <input class="form-control" name="course" placeholder="Course (e.g., CS50)" type="text">
+        </div>
+
+        <div class="col-md-4">
+            <input class="form-control" name="title" placeholder="Assignment title" type="text">
+        </div>
+
+        <div class="col-md-2">
+            <input class="form-control" name="due_date" type="date">
+        </div>
+
+        <div class="col-md-2">
+            <select class="form-select" name="priority">
+                <option value="medium" selected>Medium</option>
+                <option value="low">Low</option>
+                <option value="high">High</option>
+            </select>
+        </div>
+
+        <div class="col-md-1">
+            <button class="btn btn-primary w-100" type="submit">Add</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Title</th>
+                    <th>Due</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in assignments %}
+                    <tr data-due="{% if a.due_date %}{{ a.due_date }}{% endif %}">
+                        <td>{{ a.course }}</td>
+
+                        <td>{% if a.due_date %}{{ a.due_date }}{% else %}-{% endif %}</td>
+                        <td>{{ a.priority }}</td>
+                        <td>{{ a.title }}</td>
+                        <td style="width: 170px;">
+                            <form action="/assignments" method="post">
+                                <input type="hidden" name="action" value="status">
+                                <input type="hidden" name="assignment_id" value="{{ a.id }}">
+                                <select class="form-select form-select-sm" name="status" onchange="this.form.submit()">
+                                    <option value="todo" {% if a.status == "todo" %}selected{% endif %}>Todo</option>
+                                    <option value="doing" {% if a.status == "doing" %}selected{% endif %}>Doing</option>
+                                    <option value="done" {% if a.status == "done" %}selected{% endif %}>Done</option>
+                                </select>
+                            </form>
+                        </td>
+
+                        <td style="width: 110px;">
+                            <form action="/assignments" method="post" onsubmit="return confirm('Delete this assignment?');">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="assignment_id" value="{{ a.id }}">
+                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

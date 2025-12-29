@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Birthdays
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-3">Birthdays</h2>
+
+    <form action="/birthdays" method="post" class="row g-2 mb-4">
+        <input type="hidden" name="action" value="add">
+
+        <div class="col-md-6">
+            <input class="form-control" name="name" placeholder="Name" type="text">
+        </div>
+
+        <div class="col-md-2">
+            <input class="form-control" name="month" placeholder="Month" type="number" min="1" max="12">
+        </div>
+
+        <div class="col-md-2">
+            <input class="form-control" name="day" placeholder="Day" type="number" min="1" max="31">
+        </div>
+
+        <div class="col-md-2">
+            <button class="btn btn-primary w-100" type="submit">Add</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Month</th>
+                    <th>Day</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in birthdays %}
+                    <tr>
+                        <td>{{ b.name }}</td>
+                        <td>{{ b.month }}</td>
+                        <td>{{ b.day }}</td>
+                        <td style="width: 110px;">
+                            <form action="/birthdays" method="post" onsubmit="return confirm('Delete this birthday?');">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="birthday_id" value="{{ b.id }}">
+                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

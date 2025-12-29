@@ -1,0 +1,91 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+/* Base */
+body {
+    background-color: #f8f9fa;
+}
+
+main.container {
+    max-width: 1000px;
+}
+
+/* Headings */
+h2 {
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Cards (Dashboard + Notes) */
+.card {
+    border: 0;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.card h5 {
+    margin-bottom: 0.5rem;
+}
+
+/* Tables */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead th {
+    font-weight: 700;
+}
+
+/* Buttons: keep Bootstrap look but nicer spacing */
+.btn {
+    border-radius: 10px;
+}
+
+/* Inputs */
+.form-control, .form-select, textarea {
+    border-radius: 10px;
+}
+
+/* Small helper */
+.text-muted {
+    font-size: 0.9rem;
+}
+
+small.text-muted {
+    display: block;
+    margin-top: 4px;
+}
+
+/* JS due date highlights */
+.due-soon {
+    outline: 2px solid rgba(255, 193, 7, 0.6); /* warning-ish */
+    background-color: rgba(255, 193, 7, 0.12) !important;
+}
+
+.due-overdue {
+    outline: 2px solid rgba(220, 53, 69, 0.6); /* danger-ish */
+    background-color: rgba(220, 53, 69, 0.10) !important;
+}

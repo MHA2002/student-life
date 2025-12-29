@@ -1,0 +1,109 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-4">Student Dashboard</h2>
+    <p class="text-muted">Today: {{ today }}</p>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Tasks due soon (3 days)</h5>
+                    <span class="badge bg-danger">Overdue: {{ overdue_tasks_count }}</span>
+                </div>
+                <hr>
+                {% if due_tasks|length == 0 %}
+                    <p class="text-muted mb-0">No upcoming tasks 🎉</p>
+                {% else %}
+                    <ul class="list-group list-group-flush">
+                        {% for t in due_tasks %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ t.title }}</strong>
+                                    <div class="text-muted" style="font-size: 0.9rem;">due: {{ t.due_date }}</div>
+                                </div>
+                                <a class="btn btn-outline-primary btn-sm" href="/tasks">Open</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Assignments due soon (7 days)</h5>
+                    <span class="badge bg-danger">Overdue: {{ overdue_assignments_count }}</span>
+                </div>
+                <hr>
+                {% if due_assignments|length == 0 %}
+                    <p class="text-muted mb-0">No upcoming assignments 🎉</p>
+                {% else %}
+                    <ul class="list-group list-group-flush">
+                        {% for a in due_assignments %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ a.course }} — {{ a.title }}</strong>
+                                    <div class="text-muted" style="font-size: 0.9rem;">
+                                        due: {{ a.due_date }} | priority: {{ a.priority }} | status: {{ a.status }}
+                                    </div>
+                                </div>
+                                <a class="btn btn-outline-primary btn-sm" href="/assignments">Open</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Latest Notes</h5>
+                    <a class="btn btn-outline-primary btn-sm" href="/notes">All</a>
+                </div>
+                <hr>
+                {% if latest_notes|length == 0 %}
+                    <p class="text-muted mb-0">No notes yet.</p>
+                {% else %}
+                    {% for n in latest_notes %}
+                        <div class="mb-3">
+                            <strong>{{ n.title }}</strong>
+                            <div class="text-muted" style="font-size: 0.9rem;">{{ n.created_at }}</div>
+                            <div>{{ n.body }}</div>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Upcoming Birthdays</h5>
+                    <a class="btn btn-outline-primary btn-sm" href="/birthdays">All</a>
+                </div>
+                <hr>
+                {% if next_birthdays|length == 0 %}
+                    <p class="text-muted mb-0">No birthdays saved.</p>
+                {% else %}
+                    <ul class="list-group list-group-flush">
+                        {% for b in next_birthdays %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span><strong>{{ b.name }}</strong></span>
+                                <span class="text-muted">{{ b.month }}/{{ b.day }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

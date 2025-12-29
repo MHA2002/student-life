@@ -1,0 +1,84 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Tasks
+{% endblock %}
+
+{% block main %}
+    <h2 class="mb-3">Tasks</h2>
+
+    <!-- Add Task -->
+    <form action="/tasks" method="post" class="row g-2 mb-4">
+        <input type="hidden" name="action" value="add">
+
+        <div class="col-md-6">
+            <input autocomplete="off" autofocus class="form-control" name="title" placeholder="Task title" type="text">
+        </div>
+
+        <div class="col-md-3">
+            <input class="form-control" name="due_date" type="date">
+        </div>
+
+        <div class="col-md-3">
+            <button class="btn btn-primary w-100" type="submit">Add</button>
+        </div>
+    </form>
+
+    <!-- Tasks Table -->
+    <div class="table-responsive">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Done</th>
+                    <th>Title</th>
+                    <th>Due date</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in tasks %}
+                    <tr data-due="{% if t.due_date %}{{ t.due_date }}{% endif %}">
+                        <td style="width: 110px;">
+                            <form action="/tasks" method="post">
+                                <input type="hidden" name="action" value="toggle">
+                                <input type="hidden" name="task_id" value="{{ t.id }}">
+                                {% if t.is_done == 1 %}
+                                    <button class="btn btn-success btn-sm" type="submit">Done</button>
+                                {% else %}
+                                    <button class="btn btn-outline-secondary btn-sm" type="submit">Todo</button>
+                                {% endif %}
+                            </form>
+                        </td>
+
+                        <td>
+                            {% if t.is_done == 1 %}
+                                <div style="text-decoration: line-through;">{{ t.title }}</div>
+                            {% else %}
+                                <div>{{ t.title }}</div>
+                            {% endif %}
+                            <small class="text-muted">
+                                added at {{ t.created_at }}
+                            </small>
+                        </td>
+
+                        <td style="width: 160px;">
+                            {% if t.due_date %}
+                                {{ t.due_date }}
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+
+                        <td style="width: 110px;">
+                            <form action="/tasks" method="post" onsubmit="return confirm('Delete this task?');">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="task_id" value="{{ t.id }}">
+                                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
